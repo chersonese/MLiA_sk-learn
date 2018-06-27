@@ -1,8 +1,6 @@
-from numpy import *
 from scipy import *
 import matplotlib.pyplot as plt
 from sklearn import linear_model
-
 
 def loadDataSet(filename):
     numFeat = len(open(filename).readline().split('\t')) - 1
@@ -18,18 +16,8 @@ def loadDataSet(filename):
         labelMat.append(float(curLine[-1]))
     return dataMat,labelMat
 
-# def standRegres(xArr,yArr):
-#     xMat = mat(xArr)
-#     yMat = mat(yArr).T
-#     xTx = xMat.T*xMat
-#     if linalg.det(xTx) == 0.0:              #行列式的值等于0时
-#         print("This matrix is singular, cannot do inverse")
-#         return
-#     ws = linalg.solve(xTx,xMat.T*yMat)      # ws = xTx.I * (xMat.T*yMat)
-#     return ws
-
 # 线性回归
-def main1():
+def standRegres():
     # 计算线性回归的回归系数
     xArr,yArr = loadDataSet('ex0.txt')
     clf = linear_model.LinearRegression(fit_intercept=False)
@@ -38,13 +26,12 @@ def main1():
     ws = mat(clf.coef_.reshape((2,1)))
     return ws
 
-def main2():
+def main1():
     # 线性回归的绘图
     xArr,yArr = loadDataSet('ex0.txt')
     xMat = mat(xArr)
     yMat = mat(yArr)
-    # ws = standRegres(xArr,yArr)
-    ws = main1()
+    ws = standRegres()
     yHat = xMat*ws
     print("皮尔逊相关系数计算预测值和真实值之间的相关性：\n",corrcoef(yHat.T, yMat))
     fig = plt.figure()
@@ -55,16 +42,6 @@ def main2():
     yHat = xCopy*ws
     ax.plot(xCopy[:,1],yHat)
     plt.show()
-
-# 岭回归
-def main3():
-    # 计算岭回归的回归系数
-    xArr,yArr = loadDataSet('abalone.txt')
-    reg = linear_model.Ridge(alpha=0.2,fit_intercept=False)
-    reg.fit(xArr,yArr)
-    # print("sklearn 里面岭回归训练得到的回归系数：\n", reg.coef_)
-    ws = mat(reg.coef_.reshape(8,1))
-    return ws
 
 def ridgeTest(xArr,yArr):
     xMat = mat(xArr)
@@ -79,14 +56,13 @@ def ridgeTest(xArr,yArr):
     xArr = array(xMat)
     yArr = array(yMat)
     for i in range(numTestPts):
-        # ws = ridgeRegres(xMat,yMat,exp(i-10))
         reg = linear_model.Ridge(alpha=exp(i-10), fit_intercept=False)
         reg.fit(xArr, yArr)
         ws = mat(reg.coef_.reshape(8,1))
         wMat[i,:] = ws.T
     return wMat
 
-def main4():
+def main2():
     # 岭回归的绘图
     abX, abY = loadDataSet('abalone.txt')
     ridgeWeights = ridgeTest(abX, abY)
@@ -96,7 +72,7 @@ def main4():
     plt.show()
 
 # lasso回归
-def main5():
+def main3():
     abX, abY = loadDataSet('abalone.txt')
     reg = linear_model.Lasso(alpha=0.1,fit_intercept=False)
     reg.fit(abX,abY)
@@ -104,5 +80,5 @@ def main5():
 
 
 if __name__ == '__main__':
-    main5()
+    main3()
 

@@ -1,8 +1,7 @@
 from sklearn.cluster import KMeans
-from sklearn.externals import joblib
-import numpy
 from numpy import *
 import matplotlib.pyplot as plt
+
 # 将文本文件导入到一个列表中
 # 该返回值是一个包含许多其他列表的列表
 def loadDataSet(fileName):
@@ -39,10 +38,6 @@ def main1():
         plt.scatter(ptsInCurrCluster[:, 0].tolist(), ptsInCurrCluster[:, 1].tolist(), marker=markerStyle,s=90)
     plt.scatter(clf.cluster_centers_[:, 0].tolist(), clf.cluster_centers_[:, 1].tolist(), marker='+', s=300)
     plt.show()
-# #保存模型
-# joblib.dump(clf , 'c:/km.pkl')
-#
-# #载入保存的模型
-# clf = joblib.load('c:/km.pkl')
+
 if __name__ == '__main__':
     main1()

@@ -3,7 +3,6 @@ from numpy import *
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
 
-
 def loadDataSet(filename):
     dataMat = []
     fr = open(filename)
@@ -13,19 +12,22 @@ def loadDataSet(filename):
         fltLine = []
         for i in range(len(curLine)):
             fltLine.append(float(curLine[i]))
-        # fltLine = map(float,curLine)
         dataMat.append(fltLine)
     return dataMat
 
-rawDat = mat(loadDataSet('sine.txt'))
-testDat = arange(min(rawDat[:,0]),max(rawDat[:,1]),0.01)
-x = rawDat[:,0].tolist()
-y = rawDat[:,1].tolist()
-X = testDat.reshape(-1,1).tolist()
-clf = DecisionTreeRegressor(max_depth=5)
-clf.fit(x,y)
-Y = clf.predict(X)
-plt.subplot(111)
-plt.scatter(x,y,s=5)
-plt.plot(testDat,Y,linewidth=2)
-plt.show()
+def main():
+    rawDat = mat(loadDataSet('sine.txt'))
+    testDat = arange(min(rawDat[:,0]),max(rawDat[:,1]),0.01)
+    x = rawDat[:,0].tolist()
+    y = rawDat[:,1].tolist()
+    X = testDat.reshape(-1,1).tolist()
+    clf = DecisionTreeRegressor(max_depth=5)
+    clf.fit(x,y)
+    Y = clf.predict(X)
+    plt.subplot(111)
+    plt.scatter(x,y,s=5)
+    plt.plot(testDat,Y,linewidth=2)
+    plt.show()
+
+if __name__ == '__main__':
+    main()

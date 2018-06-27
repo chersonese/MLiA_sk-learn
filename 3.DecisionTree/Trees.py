@@ -19,21 +19,15 @@ if __name__ =='__main__':
             lenses_list.append(each[lensesLabels.index(each_label)])
         lenses_dict[each_label] = lenses_list
         lenses_list = []
-    #print(lenses_dict)                                                 #打印字典信息
     lenses_pd = pd.DataFrame(lenses_dict)                               #生成pandas_DataFrame
-    #print(lenses_pd)                                                    #打印pandas.DataFrame
     le = LabelEncoder()                                                 #创建LabelEncoder()对象
     for col in lenses_pd.columns:                                       #为每一列序列化
         lenses_pd[col] = le.fit_transform(lenses_pd[col])
-    #print(lenses_pd)
 
     clf = tree.DecisionTreeClassifier(max_depth = 4)                                            #创建DecisionTreeClassifier()类
     clf = clf.fit(lenses_pd.values.tolist(),lenses_target)                                      #使用数据，构建决策树
     dot_data = StringIO()
-    tree.export_graphviz(clf,out_file = dot_data,                                               #绘制决策树
-                         feature_names = lenses_pd.keys(),
-                         class_names = clf.classes_,
-                         filled = True,rounded =True,
-                         special_characters = True)
+    tree.export_graphviz(clf,out_file = dot_data, feature_names = lenses_pd.keys(),
+                         class_names = clf.classes_,filled = True,rounded =True, special_characters = True)               #绘制决策树
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
     graph.write_pdf("tree.pdf")                                                                 #以PDF的形式保存决策树
